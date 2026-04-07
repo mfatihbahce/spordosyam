@@ -1,0 +1,547 @@
+{
+  "info": {
+    "title": "Spordosyam Mobil API Referansı",
+    "version": "1.0",
+    "base_url": "https://altinpaletyuzmeakademi.com/spordosyam/spordosyam-web/api",
+    "authentication": "Bearer Token",
+    "headers": {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer {token}"
+    }
+  },
+  "auth": {
+    "login": {
+      "method": "POST",
+      "url": "/login",
+      "description": "E-posta ve şifre ile giriş. Token döner.",
+      "request": {
+        "email": "string (required)",
+        "password": "string (required)"
+      },
+      "response_200": {
+        "token": "string",
+        "token_type": "Bearer",
+        "user": {
+          "id": "integer",
+          "name": "string",
+          "email": "string",
+          "role": "parent|coach"
+        }
+      },
+      "response_401": {
+        "message": "Geçersiz giriş bilgileri."
+      }
+    },
+    "me": {
+      "method": "GET",
+      "url": "/me",
+      "description": "Mevcut kullanıcı bilgisi",
+      "headers_required": ["Authorization"],
+      "response_200": {
+        "user": {
+          "id": "integer",
+          "name": "string",
+          "email": "string",
+          "role": "string"
+        }
+      }
+    },
+    "logout": {
+      "method": "POST",
+      "url": "/logout",
+      "description": "Oturum kapat, token sil",
+      "headers_required": ["Authorization"],
+      "response_200": {
+        "message": "Oturum kapatıldı."
+      }
+    }
+  },
+  "parent": {
+    "menu": {
+      "method": "GET",
+      "url": "/parent/menu",
+      "description": "Sidebar menü yapısı (platformdaki sıra ve gruplar)",
+      "response_200": {
+        "menu": "array",
+        "makeup_class_enabled": "boolean"
+      }
+    },
+    "dashboard": {
+      "method": "GET",
+      "url": "/parent/dashboard",
+      "description": "Dashboard - tüm özet veriler",
+      "response_200": {
+        "parent": { "id": "integer", "name": "string", "phone": "string" },
+        "school": { "id": "integer", "name": "string", "makeup_class_enabled": "boolean" },
+        "stats": {
+          "total_children": "integer",
+          "attendance_rate": "float",
+          "total_attendances": "integer",
+          "present_attendances": "integer",
+          "absent_attendances": "integer",
+          "pending_fees": "float",
+          "total_paid": "float",
+          "total_progress": "integer"
+        },
+        "students": "array",
+        "upcoming_fees": "array",
+        "recent_attendances": "array",
+        "recent_progress": "array",
+        "recent_media": "array",
+        "calendar_events": "array"
+      }
+    },
+    "calendar": {
+      "method": "GET",
+      "url": "/parent/calendar",
+      "description": "Veli öğrencilerinin ders takvimi. Normal dersler + telafi dersleri. İptal edilen dersler hariç.",
+      "query_params": {
+        "start_date": "Y-m-d (opsiyonel, varsayılan: bu hafta başı)",
+        "end_date": "Y-m-d (opsiyonel, varsayılan: +3 ay)"
+      },
+      "response_200": {
+        "events": [
+          {
+            "title": "string",
+            "start": "Y-m-d H:i",
+            "end": "Y-m-d H:i|null",
+            "color": "string (hex)",
+            "extendedProps": {
+              "class_id": "integer",
+              "student_id": "integer",
+              "student_name": "string",
+              "sport": "string",
+              "branch": "string",
+              "coach": "string",
+              "day": "string",
+              "full_class_name": "string",
+              "is_makeup": "boolean"
+            }
+          }
+        ],
+        "students": [{ "id": "integer", "name": "string" }]
+      }
+    },
+    "students": {
+      "method": "GET",
+      "url": "/parent/students",
+      "description": "Çocuğum - öğrenci listesi",
+      "response_200": {
+        "students": [
+          {
+            "id": "integer",
+            "first_name": "string",
+            "last_name": "string",
+            "gender": "string",
+            "class": { "id": "integer", "name": "string", "branch": "string" },
+            "school": { "id": "integer", "name": "string" }
+          }
+        ]
+      }
+    },
+    "attendances": {
+      "method": "GET",
+      "url": "/parent/attendances",
+      "description": "Yoklamalar",
+      "response_200": {
+        "attendances": [
+          {
+            "id": "integer",
+            "date": "Y-m-d",
+            "time": "H:i",
+            "status": "present|absent",
+            "notes": "string",
+            "student": { "id": "integer", "name": "string" },
+            "class": { "id": "integer", "name": "string" },
+            "coach": { "id": "integer", "name": "string" }
+          }
+        ]
+      }
+    },
+    "progress": {
+      "method": "GET",
+      "url": "/parent/progress",
+      "description": "Gelişim Notları",
+      "response_200": {
+        "progress": [
+          {
+            "id": "integer",
+            "date": "Y-m-d",
+            "note": "string",
+            "score": "string",
+            "student": { "id": "integer", "name": "string" },
+            "class": { "id": "integer", "name": "string" },
+            "coach": { "id": "integer", "name": "string" }
+          }
+        ]
+      }
+    },
+    "makeup_sessions": {
+      "method": "GET",
+      "url": "/parent/makeup-sessions",
+      "description": "Telafi Dersleri",
+      "response_200": {
+        "makeups": [
+          {
+            "id": "integer",
+            "student": { "id": "integer", "name": "string" },
+            "scheduled_date": "Y-m-d",
+            "start_time": "H:i",
+            "end_time": "H:i",
+            "branch": { "id": "integer", "name": "string" },
+            "coach": { "name": "string" }
+          }
+        ]
+      }
+    },
+    "media_list": {
+      "method": "GET",
+      "url": "/parent/media",
+      "description": "Paylaşımlar listesi",
+      "response_200": {
+        "media": [
+          {
+            "id": "integer",
+            "title": "string",
+            "description": "string",
+            "type": "string",
+            "file_url": "string (doğrudan URL, public)",
+            "file_url_secure": "string (token gerekli: GET ile Authorization: Bearer)",
+            "created_at": "ISO8601"
+          }
+        ]
+      }
+    },
+    "media_show": {
+      "method": "GET",
+      "url": "/parent/media/{id}",
+      "description": "Paylaşım detayı",
+      "response_200": {
+        "id": "integer",
+        "title": "string",
+        "description": "string",
+        "type": "string",
+        "file_url": "string",
+        "file_url_secure": "string",
+        "created_at": "ISO8601"
+      }
+    },
+    "media_file": {
+      "method": "GET",
+      "url": "/parent/media/{id}/file",
+      "description": "Medya dosyasını token ile sunar. Mobil uygulamada file_url çalışmazsa bu endpoint kullanılır. Header: Authorization: Bearer {token}",
+      "headers_required": ["Authorization"],
+      "response_200": "Dosya stream (Content-Type: image/jpeg, video/mp4 vb.)",
+      "response_404": "Medya veya dosya bulunamadı"
+    },
+    "payments": {
+      "method": "GET",
+      "url": "/parent/payments",
+      "description": "Aidatlarım - ödenmemiş aidatlar",
+      "response_200": {
+        "fees": [
+          {
+            "id": "integer",
+            "student": { "id": "integer", "name": "string" },
+            "label": "string",
+            "amount": "float",
+            "due_date": "Y-m-d",
+            "status": "string"
+          }
+        ]
+      }
+    },
+    "payments_history": {
+      "method": "GET",
+      "url": "/parent/payments/history",
+      "description": "Ödeme Geçmişi",
+      "response_200": {
+        "payments": [
+          {
+            "id": "integer",
+            "amount": "float",
+            "status": "string",
+            "paid_at": "ISO8601",
+            "student": { "id": "integer", "name": "string" },
+            "fee": { "id": "integer", "label": "string", "due_date": "Y-m-d" }
+          }
+        ]
+      }
+    },
+    "payments_pay": {
+      "method": "POST",
+      "url": "/parent/payments/{studentFee}/pay",
+      "description": "Aidat ödeme",
+      "request": {
+        "card_holder_name": "string (required)",
+        "card_number": "string (required, 16-19 karakter)",
+        "expire_month": "string (required, 2 karakter)",
+        "expire_year": "string (required, 4 karakter)",
+        "cvc": "string (required, 3-4 karakter)"
+      },
+      "response_200": {
+        "message": "string",
+        "payment_id": "integer",
+        "fee": { "id": "integer", "status": "string" }
+      },
+      "response_422": {
+        "message": "string"
+      }
+    },
+    "invoices": {
+      "method": "GET",
+      "url": "/parent/invoices",
+      "description": "Faturalar",
+      "response_200": {
+        "invoices": [
+          {
+            "id": "integer",
+            "label": "string",
+            "amount": "float",
+            "due_date": "Y-m-d",
+            "status": "string",
+            "student": { "id": "integer", "name": "string" },
+            "last_payment": { "id": "integer", "amount": "float", "status": "string", "paid_at": "ISO8601" }
+          }
+        ]
+      }
+    },
+    "messages_list": {
+      "method": "GET",
+      "url": "/parent/messages",
+      "description": "Mesajlar - konuşma listesi",
+      "response_200": {
+        "conversations": [
+          {
+            "id": "integer",
+            "student": { "id": "integer", "name": "string" },
+            "coach": { "id": "integer", "name": "string" },
+            "last_message": { "id": "integer", "sender_type": "string", "body": "string", "created_at": "ISO8601" },
+            "last_message_at": "ISO8601"
+          }
+        ]
+      }
+    },
+    "messages_show": {
+      "method": "GET",
+      "url": "/parent/messages/{conversation}",
+      "description": "Konuşma detayı",
+      "response_200": {
+        "conversation": {
+          "id": "integer",
+          "student": { "id": "integer", "name": "string" },
+          "coach": { "id": "integer", "name": "string" }
+        },
+        "messages": [
+          {
+            "id": "integer",
+            "sender_type": "parent|coach",
+            "body": "string",
+            "created_at": "ISO8601",
+            "read_at": "ISO8601|null"
+          }
+        ]
+      }
+    },
+    "messages_store": {
+      "method": "POST",
+      "url": "/parent/messages",
+      "description": "Yeni mesaj gönder",
+      "request": {
+        "student_id": "integer (required)",
+        "coach_id": "integer (required)",
+        "body": "string (required, max 2000)"
+      },
+      "response_201": {
+        "conversation_id": "integer",
+        "message": { "id": "integer", "sender_type": "string", "body": "string", "created_at": "ISO8601" }
+      }
+    },
+    "messages_reply": {
+      "method": "POST",
+      "url": "/parent/messages/{conversation}/reply",
+      "description": "Mesaja cevap",
+      "request": {
+        "body": "string (required, max 2000)"
+      },
+      "response_201": {
+        "message": { "id": "integer", "sender_type": "string", "body": "string", "created_at": "ISO8601" }
+      }
+    },
+    "profile_show": {
+      "method": "GET",
+      "url": "/parent/profile",
+      "description": "Profil bilgisi",
+      "response_200": {
+        "user": { "id": "integer", "name": "string", "email": "string" },
+        "parent": { "id": "integer", "phone": "string", "address": "string", "identity_number": "string" }
+      }
+    },
+    "profile_update": {
+      "method": "PUT",
+      "url": "/parent/profile",
+      "description": "Profil güncelle",
+      "request": {
+        "name": "string (required)",
+        "email": "string (required)",
+        "current_password": "string (nullable, required_with:password)",
+        "password": "string (nullable, min 6, confirmed)",
+        "phone": "string (nullable)",
+        "address": "string (nullable)",
+        "identity_number": "string (nullable, 11 rakam)"
+      },
+      "response_200": {
+        "message": "string",
+        "user": { "id": "integer", "name": "string", "email": "string" }
+      }
+    }
+  },
+  "coach": {
+    "dashboard": {
+      "method": "GET",
+      "url": "/coach/dashboard",
+      "description": "Dashboard özeti",
+      "response_200": {
+        "coach": { "id": "integer", "name": "string", "phone": "string" },
+        "stats": {
+          "total_classes": "integer",
+          "total_attendances": "integer",
+          "attendance_rate": "float"
+        },
+        "classes": [{ "id": "integer", "name": "string" }]
+      }
+    },
+    "classes": {
+      "method": "GET",
+      "url": "/coach/classes",
+      "description": "Sınıflar listesi",
+      "response_200": {
+        "classes": [
+          { "id": "integer", "name": "string", "students_count": "integer" }
+        ]
+      }
+    },
+    "attendances": {
+      "method": "GET",
+      "url": "/coach/attendances",
+      "description": "Yoklama kayıtları",
+      "response_200": {
+        "attendances": "array"
+      }
+    },
+    "media_list": {
+      "method": "GET",
+      "url": "/coach/media",
+      "description": "Medya listesi",
+      "response_200": {
+        "media": "array"
+      }
+    },
+    "media_show": {
+      "method": "GET",
+      "url": "/coach/media/{id}",
+      "description": "Medya detayı",
+      "response_200": {
+        "id": "integer",
+        "title": "string",
+        "description": "string",
+        "type": "string",
+        "file_url": "string",
+        "file_url_secure": "string",
+        "created_at": "ISO8601"
+      }
+    },
+    "media_file": {
+      "method": "GET",
+      "url": "/coach/media/{id}/file",
+      "description": "Medya dosyası (token ile). Authorization: Bearer {token}",
+      "headers_required": ["Authorization"]
+    },
+    "messages_list": {
+      "method": "GET",
+      "url": "/coach/messages",
+      "description": "Mesaj konuşmaları",
+      "response_200": {
+        "conversations": [
+          {
+            "id": "integer",
+            "student": { "id": "integer", "name": "string" },
+            "parent": { "id": "integer", "name": "string" },
+            "last_message": "object",
+            "last_message_at": "ISO8601"
+          }
+        ]
+      }
+    },
+    "messages_show": {
+      "method": "GET",
+      "url": "/coach/messages/{conversation}",
+      "description": "Konuşma detayı",
+      "response_200": {
+        "conversation": "object",
+        "messages": "array"
+      }
+    },
+    "messages_reply": {
+      "method": "POST",
+      "url": "/coach/messages/{conversation}/reply",
+      "description": "Mesaja cevap",
+      "request": {
+        "body": "string (required, max 2000)"
+      },
+      "response_201": {
+        "message": "object"
+      }
+    },
+    "profile_show": {
+      "method": "GET",
+      "url": "/coach/profile",
+      "description": "Profil bilgisi",
+      "response_200": {
+        "user": { "id": "integer", "name": "string", "email": "string" },
+        "coach": { "id": "integer", "phone": "string" }
+      }
+    },
+    "profile_update": {
+      "method": "PUT",
+      "url": "/coach/profile",
+      "description": "Profil güncelle",
+      "request": {
+        "name": "string (required)",
+        "email": "string (required)",
+        "current_password": "string (nullable)",
+        "password": "string (nullable, min 6, confirmed)",
+        "phone": "string (nullable)"
+      },
+      "response_200": {
+        "message": "string",
+        "user": "object"
+      }
+    },
+    "makeup_sessions": {
+      "method": "GET",
+      "url": "/coach/makeup-sessions",
+      "description": "Telafi dersleri",
+      "response_200": {
+        "sessions": [
+          {
+            "id": "integer",
+            "scheduled_date": "Y-m-d",
+            "start_time": "H:i",
+            "end_time": "H:i",
+            "branch": { "id": "integer", "name": "string" },
+            "students_count": "integer"
+          }
+        ]
+      }
+    }
+  },
+  "error_codes": {
+    "401": "Geçersiz veya eksik token",
+    "403": "Yetkisiz (rol uyumsuz, lisans süresi dolmuş)",
+    "404": "Kayıt bulunamadı",
+    "422": "Validasyon hatası",
+    "500": "Sunucu hatası"
+  }
+}

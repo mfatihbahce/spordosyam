@@ -1,0 +1,10 @@
+{
+    "Hello!": "Merhaba!",
+    "Regards,": "Saygılarımızla,",
+    "Reset Password Notification": "Şifre Sıfırlama Bildirimi",
+    "You are receiving this email because we received a password reset request for your account.": "Bu e-postayı alıyorsunuz çünkü hesabınız için bir şifre sıfırlama isteği aldık.",
+    "Reset Password": "Şifreyi Sıfırla",
+    "This password reset link will expire in :count minutes.": "Bu şifre sıfırlama bağlantısı :count dakika içinde sona erecektir.",
+    "If you did not request a password reset, no further action is required.": "Şifre sıfırlama talebinde bulunmadıysanız, başka bir işlem yapmanız gerekmez.",
+    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "\":actionText\" düğmesine tıklamakta sorun yaşıyorsanız, aşağıdaki URL'yi kopyalayıp web tarayıcınıza yapıştırın:"
+}

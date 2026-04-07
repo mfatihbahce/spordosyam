@@ -1,0 +1,897 @@
+{
+	"info": {
+		"_postman_id": "spordosyam-api-collection",
+		"name": "Spordosyam Mobil API",
+		"description": "Veli ve Antrenör mobil uygulama API'leri.\n\n**Kullanım:**\n1. Auth > Login (Veli) veya Login (Antrenör) ile giriş yapın\n2. Token otomatik kaydedilir\n3. Diğer istekleri çalıştırın\n\n**Base URL:** `https://altinpaletyuzmeakademi.com/spordosyam/spordosyam-web/api`",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://altinpaletyuzmeakademi.com/spordosyam/spordosyam-web/api"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "conversation_id",
+			"value": "1"
+		},
+		{
+			"key": "media_id",
+			"value": "1"
+		},
+		{
+			"key": "student_fee_id",
+			"value": "1"
+		}
+	],
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login (Veli)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var json = pm.response.json();",
+									"    if (json.token) {",
+									"        pm.collectionVariables.set('token', json.token);",
+									"        console.log('Token kaydedildi');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"veli@example.com\",\n  \"password\": \"sifre123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": ["{{base_url}}"],
+							"path": ["login"]
+						},
+						"description": "Veli hesabı ile giriş. Başarılı olursa token otomatik kaydedilir."
+					}
+				},
+				{
+					"name": "Login (Antrenör)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var json = pm.response.json();",
+									"    if (json.token) {",
+									"        pm.collectionVariables.set('token', json.token);",
+									"        console.log('Token kaydedildi');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"antrenor@example.com\",\n  \"password\": \"sifre123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": ["{{base_url}}"],
+							"path": ["login"]
+						},
+						"description": "Antrenör hesabı ile giriş. Başarılı olursa token otomatik kaydedilir."
+					}
+				},
+				{
+					"name": "Me (Mevcut Kullanıcı)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/me",
+							"host": ["{{base_url}}"],
+							"path": ["me"]
+						},
+						"description": "Mevcut kullanıcı bilgisi (id, name, email, role)"
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/logout",
+							"host": ["{{base_url}}"],
+							"path": ["logout"]
+						},
+						"description": "Oturum kapat, token sil"
+					}
+				}
+			]
+		},
+		{
+			"name": "Veli (Parent)",
+			"item": [
+				{
+					"name": "Menü (Sidebar)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/menu",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "menu"]
+						},
+						"description": "Platformdaki sidebar menü yapısı. menu, makeup_class_enabled döner."
+					}
+				},
+				{
+					"name": "Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "dashboard"]
+						},
+						"description": "Stats, upcoming_fees, recent_attendances, recent_progress, recent_media, calendar_events"
+					}
+				},
+				{
+					"name": "Takvim (Calendar)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/calendar?start_date=2026-02-01&end_date=2026-02-28",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "calendar"],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2026-02-01",
+									"description": "Y-m-d (opsiyonel)"
+								},
+								{
+									"key": "end_date",
+									"value": "2026-02-28",
+									"description": "Y-m-d (opsiyonel)"
+								}
+							]
+						},
+						"description": "Veli öğrencilerinin ders takvimi. Normal dersler + telafi dersleri."
+					}
+				},
+				{
+					"name": "Çocuğum (Students)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/students",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "students"]
+						},
+						"description": "Öğrenci listesi (class, school bilgisi)"
+					}
+				},
+				{
+					"name": "Yoklamalar (Attendances)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/attendances",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "attendances"]
+						},
+						"description": "Devamsızlık kayıtları (son 50)"
+					}
+				},
+				{
+					"name": "Gelişim Notları (Progress)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/progress",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "progress"]
+						},
+						"description": "İlerleme notları (son 50)"
+					}
+				},
+				{
+					"name": "Telafi Dersleri",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/makeup-sessions",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "makeup-sessions"]
+						},
+						"description": "Planlanmış telafi dersleri"
+					}
+				},
+				{
+					"name": "Paylaşımlar (Media)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/media",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "media"]
+						},
+						"description": "Medya listesi"
+					}
+				},
+				{
+					"name": "Paylaşım Detay (Media)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/media/{{media_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "media", "{{media_id}}"]
+						},
+						"description": "Medya detayı. Variables'da media_id değiştirin."
+					}
+				},
+				{
+					"name": "Aidatlarım (Payments)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/payments",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "payments"]
+						},
+						"description": "Ödenmemiş aidatlar"
+					}
+				},
+				{
+					"name": "Ödeme Geçmişi",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/payments/history",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "payments", "history"]
+						},
+						"description": "Tamamlanmış ödemeler (son 50)"
+					}
+				},
+				{
+					"name": "Aidat Ödeme",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"card_holder_name\": \"AHMET YILMAZ\",\n  \"card_number\": \"5528790000000008\",\n  \"expire_month\": \"12\",\n  \"expire_year\": \"2030\",\n  \"cvc\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/parent/payments/{{student_fee_id}}/pay",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "payments", "{{student_fee_id}}", "pay"]
+						},
+						"description": "Aidat ödeme. student_fee_id Variables'da değiştirin."
+					}
+				},
+				{
+					"name": "Faturalar",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/invoices",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "invoices"]
+						},
+						"description": "Fatura listesi"
+					}
+				},
+				{
+					"name": "Mesajlar (Konuşma Listesi)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/messages",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "messages"]
+						},
+						"description": "Mesaj konuşmaları listesi"
+					}
+				},
+				{
+					"name": "Konuşma Detayı",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/messages/{{conversation_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "messages", "{{conversation_id}}"]
+						},
+						"description": "Konuşma mesajları. conversation_id Variables'da değiştirin."
+					}
+				},
+				{
+					"name": "Yeni Mesaj Gönder",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"student_id\": 1,\n  \"coach_id\": 1,\n  \"body\": \"Merhaba, çocuğumun durumu hakkında bilgi alabilir miyim?\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/parent/messages",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "messages"]
+						},
+						"description": "Yeni konuşma + ilk mesaj"
+					}
+				},
+				{
+					"name": "Mesaja Cevap",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"body\": \"Teşekkür ederim.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/parent/messages/{{conversation_id}}/reply",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "messages", "{{conversation_id}}", "reply"]
+						},
+						"description": "Mevcut konuşmaya cevap"
+					}
+				},
+				{
+					"name": "Profil",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/parent/profile",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "profile"]
+						},
+						"description": "Profil bilgisi"
+					}
+				},
+				{
+					"name": "Profil Güncelle",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Ahmet Yılmaz\",\n  \"email\": \"ahmet@example.com\",\n  \"phone\": \"5551234567\",\n  \"address\": \"Örnek Mah. No:1 İstanbul\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/parent/profile",
+							"host": ["{{base_url}}"],
+							"path": ["parent", "profile"]
+						},
+						"description": "Profil güncelle (name, email, password, phone, address, identity_number)"
+					}
+				}
+			]
+		},
+		{
+			"name": "Antrenör (Coach)",
+			"item": [
+				{
+					"name": "Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/coach/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "dashboard"]
+						},
+						"description": "Stats, classes özeti"
+					}
+				},
+				{
+					"name": "Sınıflar",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/coach/classes",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "classes"]
+						},
+						"description": "Sınıf listesi (students_count)"
+					}
+				},
+				{
+					"name": "Yoklamalar",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/coach/attendances",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "attendances"]
+						},
+						"description": "Yoklama kayıtları"
+					}
+				},
+				{
+					"name": "Medya Listesi",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/coach/media",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "media"]
+						},
+						"description": "Medya listesi"
+					}
+				},
+				{
+					"name": "Medya Detay",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/coach/media/{{media_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "media", "{{media_id}}"]
+						},
+						"description": "Medya detayı"
+					}
+				},
+				{
+					"name": "Mesajlar",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/coach/messages",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "messages"]
+						},
+						"description": "Mesaj konuşmaları"
+					}
+				},
+				{
+					"name": "Konuşma Detayı",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/coach/messages/{{conversation_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "messages", "{{conversation_id}}"]
+						},
+						"description": "Konuşma mesajları"
+					}
+				},
+				{
+					"name": "Mesaja Cevap",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"body\": \"Merhaba, yardımcı olabilirim.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/coach/messages/{{conversation_id}}/reply",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "messages", "{{conversation_id}}", "reply"]
+						},
+						"description": "Mevcut konuşmaya cevap"
+					}
+				},
+				{
+					"name": "Profil",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/coach/profile",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "profile"]
+						},
+						"description": "Profil bilgisi"
+					}
+				},
+				{
+					"name": "Profil Güncelle",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Antrenör Adı\",\n  \"email\": \"antrenor@example.com\",\n  \"phone\": \"5551234567\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/coach/profile",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "profile"]
+						},
+						"description": "Profil güncelle"
+					}
+				},
+				{
+					"name": "Telafi Dersleri",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/coach/makeup-sessions",
+							"host": ["{{base_url}}"],
+							"path": ["coach", "makeup-sessions"]
+						},
+						"description": "Planlanmış telafi dersleri"
+					}
+				}
+			]
+		}
+	]
+}

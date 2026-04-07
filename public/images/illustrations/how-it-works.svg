@@ -1,0 +1,54 @@
+<svg viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <linearGradient id="hiw-bg" x1="0" y1="0" x2="420" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fffbeb"/>
+      <stop offset="0.5" stop-color="#fef3c7"/>
+      <stop offset="1" stop-color="#fde68a"/>
+    </linearGradient>
+    <linearGradient id="hiw-1" x1="80" y1="60" x2="160" y2="140" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10b981"/>
+      <stop offset="1" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="hiw-2" x1="200" y1="60" x2="280" y2="140" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="hiw-3" x1="320" y1="60" x2="400" y2="140" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0ea5e9"/>
+      <stop offset="1" stop-color="#0284c7"/>
+    </linearGradient>
+    <filter id="hiw-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <!-- Arka plan -->
+  <rect width="420" height="380" rx="24" fill="url(#hiw-bg)" opacity="0.8"/>
+  <!-- Karakter: masa ba_1nda -->
+  <circle cx="210" cy="260" r="65" fill="#fde68a"/>
+  <circle cx="210" cy="255" r="55" fill="#fef3c7"/>
+  <ellipse cx="198" cy="252" rx="8" ry="10" fill="#1e293b"/>
+  <ellipse cx="222" cy="252" rx="8" ry="10" fill="#1e293b"/>
+  <path d="M195 272 Q210 280 225 272" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- G�vde -->
+  <path d="M160 318 Q160 380 210 385 Q260 380 260 318 L260 310 Q260 295 210 295 Q160 295 160 310 Z" fill="#fcd34d" filter="url(#hiw-shadow)"/>
+  <!-- Masa -->
+  <rect x="100" y="320" width="220" height="12" rx="6" fill="#b45309"/>
+  <rect x="110" y="332" width="200" height="8" rx="2" fill="#92400e"/>
+  <!-- Ekran -->
+  <rect x="155" y="255" width="110" height="65" rx="8" fill="#1e293b" filter="url(#hiw-shadow)"/>
+  <rect x="165" y="265" width="90" height="45" rx="4" fill="#38bdf8"/>
+  <!-- Ad1m 1: Demo -->
+  <circle cx="120" cy="100" r="45" fill="url(#hiw-1)" filter="url(#hiw-shadow)"/>
+  <text x="120" y="108" text-anchor="middle" fill="white" font-weight="bold" font-size="28" font-family="system-ui, sans-serif">1</text>
+  <path d="M120 155 L120 200 M105 185 L120 200 L135 185" stroke="#059669" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Ad1m 2: Hesap -->
+  <circle cx="210" cy="100" r="45" fill="url(#hiw-2)" filter="url(#hiw-shadow)"/>
+  <text x="210" y="108" text-anchor="middle" fill="white" font-weight="bold" font-size="28" font-family="system-ui, sans-serif">2</text>
+  <path d="M210 155 L210 220 M195 205 L210 220 L225 205" stroke="#7c3aed" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Ad1m 3: Y�net -->
+  <circle cx="300" cy="100" r="45" fill="url(#hiw-3)" filter="url(#hiw-shadow)"/>
+  <text x="300" y="108" text-anchor="middle" fill="white" font-weight="bold" font-size="28" font-family="system-ui, sans-serif">3</text>
+  <path d="M300 155 L300 200 M285 185 L300 200 L315 185" stroke="#0284c7" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Balant1 �izgileri -->
+  <path d="M165 100 L195 100 M225 100 L255 100" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6 4" fill="none" opacity="0.8"/>
+</svg>
