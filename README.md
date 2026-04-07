@@ -63,3 +63,5 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 Temporary commit to verify Plesk Git deployment pipeline.
 
 Pipeline check commit #2 for deployment verification.
+
+Pipeline check commit #3 for webhook verification.
